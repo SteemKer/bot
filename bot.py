@@ -11,7 +11,7 @@ class SteekerBot(commands.Bot):
         super().__init__(*args, **kwargs)
         with open("config.json") as config:
             self._config = json.load(config)
-        self._cogs = ["jishaku"]
+        self._cogs = ["jishaku", "cogs.steeker"]
         self.database = DatabaseManager(self._config["database"]["uri"], self._config["database"]["name"], self.loop)
 
     def startup(self):
