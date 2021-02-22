@@ -17,10 +17,13 @@ class Steeker(commands.Cog):
         self.session = aiohttp.ClientSession(loop=bot.loop)
 
     @staticmethod
-    def process_emote(emote: bytes) -> BytesIO:
+    def process_emote(emote: bytes, animated: bool) -> BytesIO:
         with Image.open(BytesIO(emote)) as em:
             em_io = BytesIO()
-            em.save(em_io, format="WEBP", save_all=True)
+            if animated:
+                em.save(em_io, format="WEBP", save_all=True, duration=em.info["duration"])
+            else:
+                em.save(em_io, format="WEBP", save_all=True)
         em_io.seek(0)
         return em_io
 
@@ -91,7 +94,7 @@ class Steeker(commands.Cog):
                 emote: discord.PartialEmoji = emoji
 
                 emote_bytes = await emote.url.read()
-                fn = partial(self.process_emote, emote_bytes)
+                fn = partial(self.process_emote, emote_bytes, emote.animated)
                 final_buffer = await self.bot.loop.run_in_executor(None, fn)
                 file = discord.File(filename=f"{emote.id}.webp", fp=final_buffer)
                 channel = await self.bot.fetch_channel(813270590608637972)
