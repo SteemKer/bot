@@ -1,0 +1,6 @@
+{
+    "python.formatting.provider": "black",
+    "python.pythonPath": "C:\\Users\\Piyush\\.virtualenvs\\steeker-ZDzkyINQ\\Scripts\\python.exe",
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true
+}
