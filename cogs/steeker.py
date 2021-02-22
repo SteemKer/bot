@@ -16,7 +16,6 @@ class Steeker(commands.Cog):
         self.db = self.bot.database
         self.session = aiohttp.ClientSession(loop=bot.loop)
 
-
     @staticmethod
     def process_emote(emote: bytes) -> BytesIO:
         with Image.open(BytesIO(emote)) as em:
@@ -106,7 +105,7 @@ class Steeker(commands.Cog):
             except Exception as e:
                 capture_exception(e)
         await message.edit(
-            content=f"<a:stickbug:813271257759612938> | Finished processing (`{count}/{len(emojis)}`)")
+            content=f"<a:stickbug:813271257759612938> | Finished processing `({count}/{len(emojis)})`")
 
 
 def setup(bot: SteekerBot):
