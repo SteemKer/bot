@@ -8,6 +8,7 @@ name = "pypi"
 motor = "*"
 dnspython = "*"
 sentry-sdk = "*"
+pillow = "*"
 
 [dev-packages]
 black = "*"
