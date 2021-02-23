@@ -66,5 +66,4 @@ class DatabaseManager():
     async def get_user_packs(self, user_id: str):
         coll: Collection = self.db["packs"]
         result = await coll.find({"creator": user_id}).to_list(length=None)
-        print(result)
         return result
