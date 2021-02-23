@@ -126,7 +126,7 @@ class Steeker(commands.Cog):
                 emote_bytes = await emote.url.read()
                 fn = partial(self.process_emote, emote_bytes, emote.animated)
                 final_buffer = await self.bot.loop.run_in_executor(None, fn)
-                file = discord.File(filename=f"{emote.id}.webp", fp=final_buffer)
+                file = discord.File(filename=f"{emote.id}.png", fp=final_buffer)
                 channel = await self.bot.fetch_channel(813270590608637972)
                 emote_message: discord.Message = await channel.send(file=file)
 
