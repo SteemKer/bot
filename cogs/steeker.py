@@ -19,7 +19,7 @@ class Steeker(commands.Cog):
     @staticmethod
     def process_emote(emote: bytes, animated: bool) -> BytesIO:
         with Image.open(BytesIO(emote)) as em:
-            em.resize((512, 512))
+            em = em.resize((512, 512))
             em_io = BytesIO()
             if animated:
                 em.save(em_io, format="WEBP", save_all=True, duration=em.info["duration"])
