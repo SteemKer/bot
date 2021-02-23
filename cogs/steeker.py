@@ -31,7 +31,7 @@ class Steeker(commands.Cog):
     @staticmethod
     def process_tray_icon(emote: bytes) -> BytesIO:
         with Image.open(BytesIO(emote)) as em:
-            em = em.resize(96, 96)
+            em = em.resize((96, 96))
             em_io = BytesIO()
             em.save(em_io, format="png")
 
