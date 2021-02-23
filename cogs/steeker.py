@@ -28,6 +28,16 @@ class Steeker(commands.Cog):
         em_io.seek(0)
         return em_io
 
+    @staticmethod
+    def process_tray_icon(emote: bytes) -> BytesIO:
+        with Image.open(BytesIO(emote)) as em:
+            em = em.resize(96, 96)
+            em_io = BytesIO()
+            em.save(em_io, format="png")
+
+        em_io.seek(0)
+        return em_io
+
     @commands.group(name="pack", aliases=["packs"], invoke_without_command=True)
     @commands.is_owner()
     async def pack(self, ctx: commands.Context):
