@@ -18,6 +18,12 @@ class DatabaseManager():
 
         return pack
 
+    async def get_pack_from_name(self, name: str):
+        coll: Collection = self.db["packs"]
+        pack = await coll.find_one({"name": name})
+
+        return not not pack
+
     async def get_creator(
             self, pack_id: str,
     ):

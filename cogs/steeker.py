@@ -70,6 +70,11 @@ class Steeker(commands.Cog):
                            "t be animated")
             return
 
+        does_exist = await self.db.get_pack_from_name(name)
+        if does_exist:
+            await ctx.send(f"<:crypuddle:813275761230217246> | `{name}` is already taken")
+            return
+
         message = await ctx.send(f"<a:c4:813270233993183282> | Creating a sticker pack with name `{name}`")
 
         await message.edit(
