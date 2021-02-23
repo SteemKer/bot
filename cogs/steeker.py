@@ -3,7 +3,7 @@ from io import BytesIO
 
 import aiohttp
 import discord
-from PIL import Image
+from PIL import Image, ImageSequence
 from sentry_sdk import capture_exception
 from discord.ext import commands
 
@@ -19,11 +19,23 @@ class Steeker(commands.Cog):
     @staticmethod
     def process_emote(emote: bytes, animated: bool) -> BytesIO:
         with Image.open(BytesIO(emote)) as em:
-            em = em.resize((512, 512))
             em_io = BytesIO()
             if animated:
-                em.save(em_io, format="WEBP", save_all=True, duration=em.info["duration"])
+                frames = ImageSequence.Iterator(em)
+
+                def cnv(frames):
+                    for frame in frames:
+                        snapshot = frame.copy()
+                        snapshot = snapshot.resize((512, 512))
+                        yield snapshot
+
+                frames = cnv(frames)
+                om = next(frames)
+                om.info = em.info
+
+                om.save(em_io, format="WEBP", save_all=True, append_images=list(frames))
             else:
+                em = em.resize((512, 512))
                 em.save(em_io, format="WEBP", save_all=True)
         em_io.seek(0)
         return em_io
@@ -33,7 +45,7 @@ class Steeker(commands.Cog):
         with Image.open(BytesIO(emote)) as em:
             em = em.resize((96, 96))
             em_io = BytesIO()
-            em.save(em_io, format="png")
+            em.save(em_io, "png")
 
         em_io.seek(0)
         return em_io
