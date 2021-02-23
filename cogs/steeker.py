@@ -33,7 +33,7 @@ class Steeker(commands.Cog):
                 om = next(frames)
                 om.info = em.info
 
-                om.save(em_io, format="WEBP", save_all=True, append_images=list(frames))
+                om.save(em_io, format="WEBP", save_all=True, append_images=list(frames), optimize=True, quality=50)
             else:
                 em = em.resize((512, 512))
                 em.save(em_io, format="WEBP", save_all=True)
