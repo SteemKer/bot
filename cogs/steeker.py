@@ -49,12 +49,31 @@ class Steeker(commands.Cog):
     @pack.command(name="create")
     @commands.is_owner()
     @commands.guild_only()
-    async def pack_create(self, ctx: commands.Context, name: str):
+    async def pack_create(self, ctx: commands.Context, name: str, tray_icon: discord.PartialEmoji):
         """
         Create a sticker pack
         """
+        if tray_icon.animated:
+            await ctx.send("<:crypuddle:813275761230217246> | Tray icons can"
+                           "t be animated")
+            return
+
         message = await ctx.send(f"<a:c4:813270233993183282> | Creating a sticker pack with name `{name}`")
-        pack_id = await self.db.create_pack(str(ctx.author.id), name, ctx.message.id)
+
+        await message.edit(
+            content=f"<a:BaguetteSwing:813299006657921045> | Creating a sticker pack with name `{name}` | `(Processing Image)`")
+        emote_bytes = await tray_icon.url.read()
+        fn = partial(self.process_tray_icon, emote_bytes)
+        final_buffer = await self.bot.loop.run_in_executor(None, fn)
+        file = discord.File(filename=f"{tray_icon.id}.webp", fp=final_buffer)
+        channel = await self.bot.fetch_channel(813270590608637972)
+        emote_message: discord.Message = await channel.send(file=file)
+        await message.edit(
+            content=f"<a:BaguetteSwing:813299006657921045> | Creating a sticker pack with name `{name}` | `(Image processed)`")
+
+        await message.edit(
+            content=f"<a:c4:813270233993183282> | Creating a sticker pack with name `{name}` | `(Securing space)`")
+        pack_id = await self.db.create_pack(str(ctx.author.id), name, emote_message.attachments[0].url, ctx.message.id)
         await message.edit(
             content=f"**<a:stickbug:813271257759612938> | Successfully created a sticker pack with name `{name}` and ID `{pack_id}`**")
         return
