@@ -5,7 +5,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo.collection import Collection
 
 
-class DatabaseManager():
+class DatabaseManager:
     def __init__(self, mongo_uri: str, database_name: str, loop: AbstractEventLoop):
         self.client = AsyncIOMotorClient(mongo_uri, io_loop=loop)
         self.db = self.client[database_name]
