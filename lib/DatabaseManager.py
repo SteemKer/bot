@@ -47,7 +47,8 @@ class DatabaseManager:
 
         return pack_id
 
-    async def add_emote(self, pack_id: str, creator: str, emote_url: str, emote_name: str, emote_id: str):
+    async def add_emote(self, pack_id: str, creator: str, emote_url: str, emote_name: str, emote_id: str,
+                        is_animated: str):
         coll: Collection = self.db["packs"]
         pack = await coll.find_one({"pack_id": pack_id, "creator": creator})
 
@@ -61,11 +62,18 @@ class DatabaseManager:
                     "data": {
                         "url": emote_url,
                         "name": emote_name,
-                        "id": emote_id
+                        "id": emote_id,
+                        "animated": is_animated
                     }
                 },
             }
         )
+
+        if not pack["animated"] and is_animated:
+            await coll.update_one(
+                {"pack_id": pack_id, "creator": creator},
+                {"$set": {"animated": True}}
+            )
 
         return True
 
