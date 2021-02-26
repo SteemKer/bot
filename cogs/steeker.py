@@ -128,12 +128,14 @@ class Steeker(commands.Cog):
             return
 
         await message.edit(
-            content="<a:BaguetteSwing:813299006657921045> | Got sticker pack, converting and adding the emotes to your sticker pack")
+            content="<a:BaguetteSwing:813299006657921045> | Got sticker pack, converting and adding the emotes to your sticker pack\n\n**Note:** Animated stickers won't be processed until a stable release from Whatsapp Inc.")
         count = 0
         for emoji in emojis:
             count = count + 1
             try:
                 emote: discord.PartialEmoji = emoji
+                if emote.animated and ctx.author.id != 365644930556755969:
+                    continue
 
                 emote_bytes = await emote.url.read()
                 fn = partial(self.process_emote, emote_bytes, emote.animated)
