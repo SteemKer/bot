@@ -11,7 +11,8 @@ class DatabaseManager:
         self.db = self.client[database_name]
 
     async def get_pack(
-            self, pack_id: str,
+        self,
+        pack_id: str,
     ):
         coll: Collection = self.db["packs"]
         pack = await coll.find_one({"pack_id": pack_id})
@@ -25,7 +26,8 @@ class DatabaseManager:
         return not not pack
 
     async def get_creator(
-            self, pack_id: str,
+        self,
+        pack_id: str,
     ):
         coll: Collection = self.db["packs"]
         pack = await coll.find_one({"pack_id": pack_id})
@@ -40,15 +42,27 @@ class DatabaseManager:
 
         coll: Collection = self.db["packs"]
         await coll.insert_one(
-            {"name": name, "creator": user_id, "pack_id": pack_id, "tray_image": tray,
-             "created_at": int(time.time()), "data": [],
-             }
+            {
+                "name": name,
+                "creator": user_id,
+                "pack_id": pack_id,
+                "tray_image": tray,
+                "created_at": int(time.time()),
+                "data": [],
+            }
         )
 
         return pack_id
 
-    async def add_emote(self, pack_id: str, creator: str, emote_url: str, emote_name: str, emote_id: str,
-                        is_animated: str):
+    async def add_emote(
+        self,
+        pack_id: str,
+        creator: str,
+        emote_url: str,
+        emote_name: str,
+        emote_id: str,
+        is_animated: str,
+    ):
         coll: Collection = self.db["packs"]
         pack = await coll.find_one({"pack_id": pack_id, "creator": creator})
 
@@ -57,22 +71,21 @@ class DatabaseManager:
 
         await coll.update_one(
             {"pack_id": pack_id, "creator": creator},
-            {"$push":
-                {
+            {
+                "$push": {
                     "data": {
                         "url": emote_url,
                         "name": emote_name,
                         "id": emote_id,
-                        "animated": is_animated
+                        "animated": is_animated,
                     }
                 },
-            }
+            },
         )
 
         if not pack["animated"] and is_animated:
             await coll.update_one(
-                {"pack_id": pack_id, "creator": creator},
-                {"$set": {"animated": True}}
+                {"pack_id": pack_id, "creator": creator}, {"$set": {"animated": True}}
             )
 
         return True

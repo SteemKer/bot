@@ -12,7 +12,9 @@ class SteekerBot(commands.Bot):
         with open("config.json") as config:
             self._config = json.load(config)
         self._cogs = ["jishaku", "cogs.steeker"]
-        self.database = DatabaseManager(self._config["database"]["uri"], self._config["database"]["name"], self.loop)
+        self.database = DatabaseManager(
+            self._config["database"]["uri"], self._config["database"]["name"], self.loop
+        )
 
     def startup(self):
         for cog in self._cogs:
@@ -37,10 +39,8 @@ if __name__ == "__main__":
         traces_sample_rate=1.0,
     )
 
-
     def get_prefix(bot, message):
         prefixes = ["s!"]
         return commands.when_mentioned_or(*prefixes)(bot, message)
-
 
     SteekerBot(command_prefix=get_prefix).start_bot()
