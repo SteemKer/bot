@@ -178,6 +178,7 @@ class Steeker(commands.Cog):
                     emote_message.attachments[0].url,
                     emote.name,
                     str(emote.id),
+                    emote.animated
                 )
                 await message.edit(
                     content=f"<a:BaguetteSwing:813299006657921045> Processed `{count}/{len(emojis)}`"
