@@ -46,7 +46,9 @@ class DatabaseManager:
                 "name": name,
                 "creator": user_id,
                 "pack_id": pack_id,
+                "animated": False,
                 "tray_image": tray,
+                "image_data_version": 0,
                 "created_at": int(time.time()),
                 "data": [],
             }
@@ -80,6 +82,9 @@ class DatabaseManager:
                         "animated": is_animated,
                     }
                 },
+                "$inc": {
+                    "image_data_version": 1
+                }
             },
         )
 

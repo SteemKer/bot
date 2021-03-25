@@ -39,7 +39,7 @@ class Steeker(commands.Cog):
                     save_all=True,
                     append_images=list(frames),
                     optimize=True,
-                    quality=50,
+                    quality=80,
                 )
             else:
                 em = em.resize((512, 512))
@@ -164,8 +164,6 @@ class Steeker(commands.Cog):
             count = count + 1
             try:
                 emote: discord.PartialEmoji = emoji
-                if emote.animated and ctx.author.id != 365644930556755969:
-                    continue
 
                 emote_bytes = await emote.url.read()
                 fn = partial(self.process_emote, emote_bytes, emote.animated)
