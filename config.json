@@ -3,5 +3,6 @@
     "database": {
         "uri": "mongodb+srv://bot:e97mbserjdztrFY4@steekercluster.jvq0d.mongodb.net/steeker?retryWrites=true&w=majority",
         "name": "steeker"
-    }
+    },
+    "whitelisted": ["365644930556755969", "368314791980171264"]
 }

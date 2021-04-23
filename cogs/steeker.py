@@ -9,6 +9,8 @@ from discord.ext import commands
 
 from bot import SteekerBot
 
+async def is_whitelisted(ctx):
+    return self.bot._config["whitelisted"].__contains__(ctx.author.id)
 
 class Steeker(commands.Cog):
     def __init__(self, bot):
@@ -58,7 +60,7 @@ class Steeker(commands.Cog):
         return em_io
 
     @commands.group(name="pack", aliases=["packs"], invoke_without_command=True)
-    @commands.is_owner()
+    @commands.check(is_whitelisted)
     async def pack(self, ctx: commands.Context):
         """Pack command"""
 
@@ -66,7 +68,7 @@ class Steeker(commands.Cog):
         return
 
     @pack.command(name="create")
-    @commands.is_owner()
+    @commands.check(is_whitelisted)
     @commands.guild_only()
     async def pack_create(
         self, ctx: commands.Context, name: str, tray_icon: discord.PartialEmoji
@@ -109,7 +111,7 @@ class Steeker(commands.Cog):
         return
 
     @pack.command(name="list")
-    @commands.is_owner()
+    @commands.check(is_whitelisted)
     @commands.guild_only()
     async def packs_list(self, ctx: commands.Context):
         """
@@ -133,7 +135,7 @@ class Steeker(commands.Cog):
         return
 
     @commands.command(name="create")
-    @commands.is_owner()
+    @commands.check(is_whitelisted)
     @commands.guild_only()
     async def sticker_create(
         self,
