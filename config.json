@@ -1,8 +1,0 @@
-{
-    "token": "NzkzNDI0NjA2MzI0OTgxNzcw.X-sEPw.3V5Yx9HEBsImWcYxrMkr6mXWbPY",
-    "database": {
-        "uri": "mongodb+srv://bot:e97mbserjdztrFY4@steekercluster.jvq0d.mongodb.net/steeker?retryWrites=true&w=majority",
-        "name": "steeker"
-    },
-    "whitelisted": ["365644930556755969", "368314791980171264"]
-}
